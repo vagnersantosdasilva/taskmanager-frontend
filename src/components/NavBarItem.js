@@ -6,7 +6,7 @@ class NavBarItem extends Component {
         return (
             <div>
                 <Link to={this.props.item.href}
-                className = "nav-item nav-link" 
+                className = {`nav-item nav-link  ${this.props.item.active? "active" :""}`}
                 onClick={e => this.props.onClick(this.props.item) }> 
                 {this.props.item.name} </Link>
             </div>
