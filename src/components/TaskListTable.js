@@ -12,6 +12,7 @@ class TaskListTable extends Component {
             tasks:[]
         }
         this.onDeleteHandler=this.onDeleteHandler.bind(this);
+        this.onStatusChangeHandler=this.onStatusChangeHandler.bind(this);
     }
 
     //Quando o componente estiver pronto
@@ -19,7 +20,7 @@ class TaskListTable extends Component {
         this.listTasks();
     }
 
-    //TODO:pegar a lista de tarefas do servico e colocar no  state local
+    
     listTasks(){
         this.setState({tasks:TaskService.list()});
     }
@@ -32,6 +33,12 @@ class TaskListTable extends Component {
         }
     }
 
+    onStatusChangeHandler(task){
+        task.done=!task.done;
+        TaskService.save(task);
+        this.listTasks();
+    }
+
     render() {
         return (
             <div className="container" style={{marginTop:20}}>
@@ -41,6 +48,7 @@ class TaskListTable extends Component {
                         <TableBody 
                             tasks={this.state.tasks}
                             onDelete={this.onDeleteHandler}
+                            onStatusChange ={this.onStatusChangeHandler}
                         />
                         :
                         <EmptyTableBody/>
@@ -74,11 +82,24 @@ const TableBody =(props) =>{
         <tbody>
             {props.tasks.map(task => 
                 <tr key={task.id}> 
-                    <td><input type="checkbox" checked={task.done}/></td>
-                    <td>{task.description}</td>
-                    <td>{task.whenToDo}</td>
                     <td>
-                        <input type="button" value="Editar" className="btn btn-primary"/>&nbsp;
+                        <input type="checkbox" 
+                            checked={task.done} 
+                            onChange={()=>props.onStatusChange(task)}
+                        />
+                    </td>
+                    <td>
+                        {task.description}
+                    </td>
+                    <td>
+                        {task.whenToDo}
+                    </td>
+                    <td>
+                        <input 
+                            type="button" 
+                            value="Editar" 
+                            className="btn btn-primary"
+                        />&nbsp;
                         <input 
                             type="button" 
                             value="Excluir" 
