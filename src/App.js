@@ -1,5 +1,6 @@
-import React from 'react';
-import { Component } from 'react';
+import React , { Component } from 'react';
+import NavBar from './components/NavBar';
+import NavBarItem from './components/NavBarItem';
 
 
 
@@ -11,7 +12,8 @@ class App extends Component {
     return (
      
         <div className="App">
-          <h1>Inicio do projeto</h1>
+          <NavBar/>
+          
         </div>
      
     );
