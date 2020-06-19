@@ -89,10 +89,10 @@ const TableBody =(props) =>{
                         />
                     </td>
                     <td>
-                        {task.description}
+                        {task.done ? <s>{task.description}</s> : task.description }
                     </td>
                     <td>
-                        {task.whenToDo}
+                        {task.done ? <s>{task.whenToDo}</s> : task.whenToDo }
                     </td>
                     <td>
                         <input 
