@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import TaskService from '../api/TaskService';
+import { Redirect } from 'react-router-dom';
 
 class TaskForm extends Component {
     constructor(props){
@@ -9,7 +11,8 @@ class TaskForm extends Component {
                 id:0,  
                 description:"",
                 whenToDo:""
-            }
+            },
+            redirect:false
         }
 
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -18,6 +21,8 @@ class TaskForm extends Component {
 
     onSubmitHandler(event){
         event.preventDefault();  // não faz refresh quando onSubmit é chamado
+        TaskService.save(this.state.task)
+        this.setState({redirect:true})
     }
 
     onInputChangeHandler(event){
@@ -28,6 +33,10 @@ class TaskForm extends Component {
     }
 
     render() {
+        if (this.state.redirect){
+           return <Redirect to="/" />
+        }
+        
         return (
             <div>
                 
