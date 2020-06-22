@@ -12,7 +12,8 @@ class TaskForm extends Component {
                 description:"",
                 whenToDo:""
             },
-            redirect:false
+            redirect:false,
+            buttonName:"Cadastrar"
         }
 
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -26,7 +27,7 @@ class TaskForm extends Component {
         
         if (editId){ //modo de edição
             const task  = TaskService.load(~~editId)// editId convertido para inteiro
-            this.setState ({task :task} );
+            this.setState ({task :task , buttonName:"Alterar"} );
             console.log("task carregada :"+task.description +" / "+task.whenToDo); 
         }
 
@@ -54,7 +55,7 @@ class TaskForm extends Component {
             <div>
                 
                 <div className="container">
-                    <h2>Cadastrar Tarefa </h2>    
+                    <h2>{this.state.buttonName} Tarefa </h2>    
                         <form onSubmit={this.onSubmitHandler}>
                             <div className="form-group">
                                 <labal hrmlFor="description">Descrição</labal>
@@ -77,8 +78,17 @@ class TaskForm extends Component {
                             </div>
 
                             <div className="form-group">
-                                <button type="submit" className="btn btn-primary">Cadastrar</button>&nbsp;&nbsp;
-                                <button type="button" className="btn btn-danger">Cancelar</button>
+                                <button 
+                                        type="submit" 
+                                        className="btn btn-primary">{this.state.buttonName}
+                                </button>&nbsp;&nbsp;
+                                <button 
+                                        type="button" 
+                                        className="btn btn-primary"
+                                        onClick={()=>{this.setState({redirect:true})}}
+                                        >Cancelar
+                                        
+                                </button>
                             </div>
                             
                         </form>
