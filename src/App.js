@@ -16,6 +16,7 @@ class App extends Component {
           <NavBar/>
           <Switch>
             <Route exact path ="/form" component = {TaskForm}/>
+            <Route exact path ="/form/:id" component = {TaskForm}/>
             <Route path ="/" component = {TaskListTable} />
           </Switch>
         </div>

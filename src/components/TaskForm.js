@@ -19,6 +19,19 @@ class TaskForm extends Component {
         this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
     }
 
+    //verificar se id está na url
+    componentDidMount(){
+        const editId = this.props.match.params.id;
+        
+        
+        if (editId){ //modo de edição
+            const task  = TaskService.load(~~editId)// editId convertido para inteiro
+            this.setState ({task :task} );
+            console.log("task carregada :"+task.description +" / "+task.whenToDo); 
+        }
+
+    }
+
     onSubmitHandler(event){
         event.preventDefault();  // não faz refresh quando onSubmit é chamado
         TaskService.save(this.state.task)
@@ -48,6 +61,7 @@ class TaskForm extends Component {
                                 <input type="text"
                                     className="form-control"
                                     name="description"
+                                    value={this.state.task.description}
                                     placeholder="Digite a descrição" 
                                     onChange={this.onInputChangeHandler}/>
                             </div>
@@ -57,6 +71,7 @@ class TaskForm extends Component {
                                 <input type="date"
                                     className="form-control"
                                     name="whenToDo"
+                                    value={this.state.task.whenToDo}
                                     placeholder="Informe a data do evento" 
                                     onChange={this.onInputChangeHandler}/>
                             </div>
