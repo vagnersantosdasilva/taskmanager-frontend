@@ -31,11 +31,6 @@ class TaskService{
         }
     }
 
-    update(task){
-        if (task.id!==0){
-            this.tasks.map(t => t.id ===task.id ? task : t );
-        }
-    }
 }
 
 export default new TaskService();

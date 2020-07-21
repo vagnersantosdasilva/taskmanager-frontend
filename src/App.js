@@ -3,6 +3,7 @@ import NavBar from './components/NavBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import TaskListTable from './components/TaskListTable';
 import TaskForm from './components/TaskForm';
+import Login from './components/Login';
 
 class App extends Component {
   //constructor(props){
@@ -15,6 +16,8 @@ class App extends Component {
         <div className="App">
           <NavBar/>
           <Switch>
+            
+            <Route exact path ="/login" component = {Login}/>
             <Route exact path ="/form" component = {TaskForm}/>
             <Route exact path ="/form/:id" component = {TaskForm}/>
             <Route path ="/" component = {TaskListTable} />

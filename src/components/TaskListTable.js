@@ -55,7 +55,7 @@ class TaskListTable extends Component {
         return (
             
             <div className="container" style={{marginTop:20}}>
-                 <div><Alert message ="Alerta de teste"/></div>
+                
                 <table className="table table-striped">
                     <TableHeader/>
                     {this.state.tasks.length > 0 ?
