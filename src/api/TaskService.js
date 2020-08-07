@@ -1,3 +1,5 @@
+import AuthService from "./AuthService";
+
 //mock
 class TaskService{
     
@@ -28,6 +30,14 @@ class TaskService{
             const max  = Math.max(...ids);
             task.id = max+1;
             this.tasks.push(task);
+        }
+    }
+
+    buildAuthHeader(){
+        return{
+            headers:{
+                'Authorization':`Bearer ${AuthService.getJWTToken()}`
+            }
         }
     }
 
