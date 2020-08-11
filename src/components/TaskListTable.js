@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { Redirect } from 'react-router-dom';
 import Alert from './Alert';
 import Spinner from './Spinner';
+import AuthService from '../api/AuthService';
 
 class TaskListTable extends Component {
 
@@ -12,13 +13,16 @@ class TaskListTable extends Component {
         super(props)
         
         this.state = {
+           
             tasks:[],
             editId:0,
-            loading:true
+            loading:false,
+            alert:null
         }
         this.onDeleteHandler=this.onDeleteHandler.bind(this);
         this.onStatusChangeHandler=this.onStatusChangeHandler.bind(this);
         this.onEditHandler=this.onEditHandler.bind(this);
+        this.setErrorState=this.setErrorState.bind(this);
     }
 
     //Quando o componente estiver pronto
@@ -28,7 +32,21 @@ class TaskListTable extends Component {
 
     
     listTasks(){
-        this.setState({tasks:TaskService.list()});
+        //this.setState({tasks:TaskService.list()});
+        if (!AuthService.isAuthenticated()){
+            console.log('autenticacao...')
+            console.log(AuthService.isAuthenticated());
+            return <Redirect to="/login/"/> ;}
+        console.log('passou autenticacao...')
+        this.setState({loading:true});
+        TaskService.list(
+            tasks =>this.setState({tasks:tasks ,loading:false}),
+            error =>this.setErrorState(error)
+        );
+    }
+
+    setErrorState(error){
+        this.setState({alert:`Erro na requisição :${error.message}`,loading:false})
     }
 
     onDeleteHandler(id){
@@ -50,14 +68,22 @@ class TaskListTable extends Component {
         
     }
 
+    
+
     render() {
         
+        if(!AuthService.isAuthenticated()){
+            console.log('Autenticado ? :',!AuthService.isAuthenticated());
+            return <Redirect to="/login"/>
+        }
         
         if (this.state.editId > 0)  return <Redirect to= {`/form/${this.state.editId}`}/>
         
         return (
-            
+         
             <div className="container" style={{marginTop:20}}>
+                <h3>Lista de Tarefas</h3>
+                {this.state.alert!=null ? <Alert message ={this.state.alert} />:""}
                 {this.state.loading ?<Spinner/> :
                     <table className="table table-striped">
                         <TableHeader/>
@@ -78,8 +104,6 @@ class TaskListTable extends Component {
         );
     }
 }
-
-
 
 
 const TableHeader = () =>{

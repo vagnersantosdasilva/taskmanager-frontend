@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AuthService from '../api/AuthService';
 import Alert from './Alert';
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
 
@@ -10,17 +11,28 @@ class Login extends Component {
            username :"",
            password:"",
            alert:null,
-           processing:false
+           processing:false,
+           loggedIn:false
        }
        this.handleInputChanged=this.handleInputChanged.bind(this);
        this.handleSubmit=this.handleSubmit.bind(this);
+       this.handleLoginResponse = this.handleLoginResponse.bind(this);
    }
 
    handleSubmit(event){
        event.preventDefault();
-       AuthService.login(this.state.username,this.state.password);
+       AuthService.login(this.state.username,this.state.password,this.handleLoginResponse);
 
    }
+   handleLoginResponse(success){
+       if (success){
+            this.setState({loggedIn:true});
+       }else{
+           this.setState({alert:"O login não pode ser realizado"})
+       }
+   }
+
+
    handleInputChanged(event){
        const field = event.target.name;
        const value = event.target.value;
@@ -29,6 +41,10 @@ class Login extends Component {
    }
 
     render() {
+
+        if (this.state.loggedIn){
+            return <Redirect to ="/"  />
+        }
         return (
             <div>                
             <div className="container">
