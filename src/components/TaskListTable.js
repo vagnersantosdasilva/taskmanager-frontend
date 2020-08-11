@@ -50,9 +50,16 @@ class TaskListTable extends Component {
 
     onDeleteHandler(id){
         if (window.confirm("Tem certeza que deseja excluir a tarefa ?")){
-            TaskService.delete(id);
-            this.listTasks();
-            toast.success("Tarefa exluída" ,{position:toast.POSITION.BOTTOM_LEFT});
+            TaskService.delete(
+                id,
+                () =>{ 
+                    this.listTasks();
+                    toast.success("Tarefa exluída" ,{position:toast.POSITION.BOTTOM_LEFT});
+                },
+                error=>this.setErrorState(error)
+            );
+            //this.listTasks();
+            
         }
     }
 
