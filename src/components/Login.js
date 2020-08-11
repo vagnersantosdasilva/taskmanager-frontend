@@ -41,49 +41,49 @@ class Login extends Component {
    }
 
     render() {
-
+        if(AuthService.isAuthenticated()){return <Redirect to="/"/>}
         if (this.state.loggedIn){
             return <Redirect to ="/"  />
         }
         return (
             <div>                
-            <div className="container">
-                <h2>Login</h2>
-                {this.state.alert!==null?<Alert message={this.state.alert}/>:""}
-                <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="username">Usuário</label>
-                        <input 
-                            type = "text"
-                            className = "form-control"
-                            onChange = {this.handleInputChanged}
-                            value={this.state.username} 
-                            name = "username"
-                            placeholder="Digite o usuário"/>
+                <div className="container">
+                    <h2>Login</h2>
+                    {this.state.alert!==null?<Alert message={this.state.alert}/>:""}
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="username">Usuário</label>
+                            <input 
+                                type = "text"
+                                className = "form-control"
+                                onChange = {this.handleInputChanged}
+                                value={this.state.username} 
+                                name = "username"
+                                placeholder="Digite o usuário"/>
 
-                    </div>
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="password">Senha</label>
-                        <input 
-                            type = "password"
-                            className = "form-control"
-                            onChange = {this.handleInputChanged}
-                            value={this.state.password} 
-                            name = "password"
-                            placeholder="Digite a senha"/>
+                        <div className="form-group">
+                            <label htmlFor="password">Senha</label>
+                            <input 
+                                type = "password"
+                                className = "form-control"
+                                onChange = {this.handleInputChanged}
+                                value={this.state.password} 
+                                name = "password"
+                                placeholder="Digite a senha"/>
 
-                    </div>
+                        </div>
 
-                    <button type="submit"
-                            className="btn btn-primary"
-                            disabled={this.state.processing}
-                            >Login
-                    </button>
+                        <button type="submit"
+                                className="btn btn-primary"
+                                disabled={this.state.processing}
+                                >Login
+                        </button>
 
-                     
-                </form>
-            </div>
+                        
+                    </form>
+                </div>
             </div>
                 
         );

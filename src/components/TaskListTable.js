@@ -34,10 +34,8 @@ class TaskListTable extends Component {
     listTasks(){
         //this.setState({tasks:TaskService.list()});
         if (!AuthService.isAuthenticated()){
-            console.log('autenticacao...')
-            console.log(AuthService.isAuthenticated());
-            return <Redirect to="/login/"/> ;}
-        console.log('passou autenticacao...')
+                return <Redirect to="/login/"/> ;
+        }
         this.setState({loading:true});
         TaskService.list(
             tasks =>this.setState({tasks:tasks ,loading:false}),
@@ -72,10 +70,7 @@ class TaskListTable extends Component {
 
     render() {
         
-        if(!AuthService.isAuthenticated()){
-            console.log('Autenticado ? :',!AuthService.isAuthenticated());
-            return <Redirect to="/login"/>
-        }
+        if(!AuthService.isAuthenticated()){return <Redirect to="/login"/>}
         
         if (this.state.editId > 0)  return <Redirect to= {`/form/${this.state.editId}`}/>
         
