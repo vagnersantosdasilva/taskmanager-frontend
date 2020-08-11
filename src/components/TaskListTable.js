@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import Alert from './Alert';
 import Spinner from './Spinner';
 import AuthService from '../api/AuthService';
+import Moment from 'react-moment';
 
 class TaskListTable extends Component {
 
@@ -130,7 +131,8 @@ const TableBody =(props) =>{
                         {task.done ? <s>{task.description}</s> : task.description }
                     </td>
                     <td>
-                        {task.done ? <s>{task.whenToDo}</s> : task.whenToDo }
+                        {task.done ? <s><Moment format="DD/MM/YYYY">{task.whenToDo}</Moment></s> : 
+                        <Moment format="DD/MM/YYYY">{task.whenToDo}</Moment> }
                     </td>
                     <td>
                         <input 
