@@ -18,7 +18,8 @@ class TaskForm extends Component {
             redirect:false,
             buttonName:"Cadastrar",
             alert:null,
-            loading:false
+            loading:false,
+            saving:false
         }
 
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -47,14 +48,15 @@ class TaskForm extends Component {
     }
 
     setErrorState(error){
-        this.setState({alert:error.message ,loadiong:false});
+        this.setState({alert:error.message ,loadiong:false,saving:false});
     }
 
     onSubmitHandler(event){
+        this.setState({saving:true});
         event.preventDefault();  // não faz refresh quando onSubmit é chamado
         TaskService.save(
             this.state.task,
-            () =>this.setState({redirect:true}),
+            () =>this.setState({redirect:true,saving:false}),
             error => {
                 if(error.response){
                     this.setErrorState(`Erro ao carregar dados ; ${error.response}`);
@@ -113,7 +115,17 @@ class TaskForm extends Component {
                             <div className="form-group">
                                 <button 
                                         type="submit" 
-                                        className="btn btn-primary">{this.state.buttonName}
+                                        className="btn btn-primary"
+                                        desible={this.state.saving}>
+                                            {
+                                                
+                                                this.state.saving?
+                                                    <span className="spinner-border spinner-border-sm"
+                                                        role="status" aria-hidde="true"></span>
+                                                    :this.state.buttonName
+                                            }
+                                            
+
                                 </button>&nbsp;&nbsp;
                                 <button 
                                         type="button" 
