@@ -56,7 +56,7 @@ class TaskForm extends Component {
         event.preventDefault();  // não faz refresh quando onSubmit é chamado
         TaskService.save(
             this.state.task,
-            () =>this.setState({redirect:true,saving:false}),
+            () =>this.setState({redirect:true,saving:false,alert:null}),
             error => {
                 if(error.response){
                     this.setErrorState(`Erro ao carregar dados ; ${error.response}`);
