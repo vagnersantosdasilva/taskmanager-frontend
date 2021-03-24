@@ -34,8 +34,8 @@ class TaskService{
         }
         else {
             axios.put(`${API_ENDPOINT}/tasks/${task.id}`,task,this.buildAuthHeader())
-                .then(()=>onSave())
-                .catch(e=>onError(e));
+                .then(() => onSave() )
+                .catch(e => onError(e));
         }
     }
 
