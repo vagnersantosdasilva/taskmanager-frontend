@@ -24,6 +24,10 @@ class AuthService{
         return true;
     }
 
+    logout(){
+        sessionStorage.removeItem(JWT_TOKEN_NAME);
+    }
+
 }
 
 export default new AuthService();

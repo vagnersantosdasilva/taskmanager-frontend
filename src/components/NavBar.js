@@ -15,6 +15,7 @@ class NavBar extends Component {
             ]
         }
         this.onClickHandler=this.onClickHandler.bind(this);
+        this.onLogoutHandler=this.onLogoutHandler.bind(this);
     }
     onClickHandler(itemClicked){
         const items =[...this.state.items];
@@ -27,6 +28,11 @@ class NavBar extends Component {
             }
         })
         this.setState({items});
+    }
+
+    onLogoutHandler(){
+        AuthService.logout();
+        this.props.onLinkClick();
     }
     render() {
         return (
@@ -45,7 +51,10 @@ class NavBar extends Component {
                                     onClick = {this.onClickHandler} /> )}
                         
                             {AuthService.isAuthenticated() ? 
-                                <NavBarItem item = {{name:"Logout" , href :"#" , active:"false"}} />
+                                <NavBarItem 
+                                    item = {{name:"Logout" , href :"#" , active:"false"}} 
+                                    onClick={this.onLogoutHandler}
+                                    />
                                 :""
                             }
                         </div>
