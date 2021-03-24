@@ -28,6 +28,16 @@ class AuthService{
         sessionStorage.removeItem(JWT_TOKEN_NAME);
     }
 
+    getJWTTokenData(){
+        //Converter TOKEN em objeto que contem o displayname
+        const jwtToken = this.getJWTToken();
+        if (jwtToken ==null) {
+            return null
+        }
+        const jwtTokenData = atob(jwtToken.split(".")[1]);
+        return JSON.parse(jwtTokenData);
+    }
+
 }
 
 export default new AuthService();
