@@ -34,7 +34,7 @@ class TaskForm extends Component {
         this.setState({loading:true});
        
         if (~~editId!==0){ //modo de edição
-            const task  = TaskService.load( 
+              TaskService.load( 
               ~~editId,
                 task => this.setState({task:task,buttonName:"Alterar"}),
                 error =>{
@@ -93,7 +93,7 @@ class TaskForm extends Component {
                     <h2>{this.state.buttonName} Tarefa </h2>    
                         <form onSubmit={this.onSubmitHandler}>
                             <div className="form-group">
-                                <labal hrmlFor="description">Descrição</labal>
+                                <label description="description">Descrição</label>
                                 <input type="text"
                                     className="form-control"
                                     name="description"
@@ -103,7 +103,7 @@ class TaskForm extends Component {
                             </div>
 
                             <div className="form-group">
-                                <labal hrmlFor="whenToDo">Data</labal>
+                                <label data="whenToDo">Data</label>
                                 <input type="date"
                                     className="form-control"
                                     name="whenToDo"
@@ -116,12 +116,12 @@ class TaskForm extends Component {
                                 <button 
                                         type="submit" 
                                         className="btn btn-primary"
-                                        desible={this.state.saving}>
+                                        disable={this.state.saving}>
                                             {
                                                 
                                                 this.state.saving?
                                                     <span className="spinner-border spinner-border-sm"
-                                                        role="status" aria-hidde="true"></span>
+                                                        role="status" aria-hidden="true"></span>
                                                     :this.state.buttonName
                                             }
                                             
