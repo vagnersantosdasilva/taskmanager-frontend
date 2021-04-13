@@ -63,6 +63,7 @@ class TaskListTable extends Component {
         }
     }
 
+    //TODO: Corrigir comportamento do list "piscar" ao atualizar o status da tarefa.
     onStatusChangeHandler(task){
         task.done=!task.done;
 
