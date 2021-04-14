@@ -19,6 +19,21 @@ const TaskListTable =()=> {
        }
    },[auth.credentials]);
 
+   useEffect(()=>{
+        if(tasks.taskRemoved !==null ){
+            toast.success("Tarefa excluída" , {position:toast.POSITION.BOTTOM_LEFT});
+            tasks.clearTaskRemoved();
+        }
+   },[tasks.taskRemoved]);
+
+   const onDeleteHandler = (taskToDelete)=>{
+       if (window.confirm("Você está certo disso ?")){
+           tasks.remove(taskToDelete);
+           //tasks.clearTaskRemoved();
+
+       }
+   }
+
     if(!auth.isAuthenticated()){return <Redirect to="/login"/>}
 
 
@@ -38,14 +53,11 @@ const TaskListTable =()=> {
                      </tr>
                      </thead>
                      {tasks.taskList.length === 0 ? (
-                             <thead className="thead-dark">
+                             <tbody className="thead-dark">
                              <tr>
-                                 <th scope="col">Status</th>
-                                 <th scope="col">Descrição</th>
-                                 <th scope="col">Data</th>
-                                 <th scope="col">Ações</th>
+
                              </tr>
-                             </thead>
+                             </tbody>
                          ):
                          (
                              <tbody>
@@ -75,7 +87,7 @@ const TaskListTable =()=> {
                                                     type="button"
                                                     value="Excluir"
                                                     className="btn btn-danger"
-                                                    onClick={() => false}
+                                                    onClick={() => onDeleteHandler(task)}
                                                 />
                                             </td>
                                         </tr>
@@ -85,7 +97,7 @@ const TaskListTable =()=> {
                      }
                  </table>
             }
-            <ToastContainer autoClose={1500}/>
+            <ToastContainer autoClose={2000}/>
         </div>
     );
 }
