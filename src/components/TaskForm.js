@@ -1,15 +1,29 @@
-import React, { useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Redirect } from 'react-router-dom';
 import Alert from './Alert';
 import {AuthContext} from "../hooks/useAuth";
 import {useTasks} from "../hooks/useTasks";
 
-const TaskForm  =() => {
+const TaskForm  =(props) => {
     const auth = useContext(AuthContext);
     const [ task , setTask ] = useState({id:0,description:"",whenToDo:""});
     const [ redirect , setRedirect] = useState(false);
     const tasks = useTasks();
 
+    useEffect(() =>{
+        const editId = props.match.params.id;
+        if (editId && auth.credentials.username !==null){
+            console.log("Id capturado :"+editId);
+            tasks.load(~~editId);
+        }
+    },[auth.credentials]);
+
+    useEffect(() =>{
+        if (tasks.taskLoaded){
+            setTask(tasks.taskLoaded);
+            tasks.clearTaskLoaded();
+        }
+    },[tasks.taskLoaded]);
 
     const onSubmitHandler =(event)=>{
         event.preventDefault();  // não faz refresh quando onSubmit é chamado
@@ -24,7 +38,7 @@ const TaskForm  =() => {
 
     if(!auth.isAuthenticated()){return <Redirect to="/login"/>}
 
-    if (redirect  || tasks.taskUodated){
+    if (redirect  || tasks.taskUpdated){
        return <Redirect to="/" />
     }
 
@@ -66,6 +80,7 @@ const TaskForm  =() => {
                                                         role="status" aria-hidden="true"></span>
                                                     :task.id===0 ? "Gravar" : "Alterar"
                                             }
+
                                 </button>&nbsp;&nbsp;
                                 <button 
                                         type="button" 
