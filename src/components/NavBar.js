@@ -1,9 +1,7 @@
 import React, {Component, useContext} from 'react';
 import NavBarItem from './NavBarItem';
 import {APP_NAME} from '../constants'
-import AuthService from '../api/AuthService';
 import {useNavBarItems} from "../hooks/useNavBarItems";
-import {AuthContext} from "../hooks/useAuth";
 
 const NavBar  = () =>{
 
