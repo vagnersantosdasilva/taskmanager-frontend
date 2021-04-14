@@ -34,6 +34,11 @@ const TaskListTable =()=> {
        }
    }
 
+   const onStatusChangeHandle = (taskToUpdate)=>{
+       taskToUpdate.done = !taskToUpdate.done;
+       tasks.save(taskToUpdate,true);
+   }
+
     if(!auth.isAuthenticated()){return <Redirect to="/login"/>}
 
 
@@ -66,7 +71,7 @@ const TaskListTable =()=> {
                                             <td>
                                                 <input type="checkbox"
                                                        checked={task.done}
-                                                       onChange={()=>false}
+                                                       onChange={()=>onStatusChangeHandle(task)}
                                                 />
                                             </td>
                                             <td>
