@@ -1,136 +1,77 @@
-import React, { Component } from 'react';
-import TaskService from '../api/TaskService';
+import React, { useContext, useState} from 'react';
 import { Redirect } from 'react-router-dom';
-import AuthService from '../api/AuthService';
-import Spinner from './Spinner';
 import Alert from './Alert';
+import {AuthContext} from "../hooks/useAuth";
+import {useTasks} from "../hooks/useTasks";
 
-class TaskForm extends Component {
-    constructor(props){
-        super(props);
+const TaskForm  =() => {
+    const auth = useContext(AuthContext);
+    const [ task , setTask ] = useState({id:0,description:"",whenToDo:""});
+    const [ redirect , setRedirect] = useState(false);
+    const tasks = useTasks();
 
-        this.state ={
-            task : {
-                id:0,  
-                description:"",
-                whenToDo:""
-            },
-            redirect:false,
-            buttonName:"Cadastrar",
-            alert:null,
-            loading:false,
-            saving:false
-        }
 
-        this.onSubmitHandler = this.onSubmitHandler.bind(this);
-        this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
-        this.setErrorState = this.setErrorState.bind(this);
-    }
-
-    //verificar se id está na url
-    componentDidMount(){
-        const editId = this.props.match.params.id;
-        console.log(~~editId)
-        this.setState({loading:true});
-       
-        if (~~editId!==0){ //modo de edição
-              TaskService.load( 
-              ~~editId,
-                task => this.setState({task:task,buttonName:"Alterar"}),
-                error =>{
-                    this.setErrorState(error);
-                }
-            );// editId convertido para inteiro
-        }
-        this.setState({loading:false});
-        
-
-    }
-
-    setErrorState(error){
-        this.setState({alert:error.message ,loadiong:false,saving:false});
-    }
-
-    onSubmitHandler(event){
-        this.setState({saving:true});
+    const onSubmitHandler =(event)=>{
         event.preventDefault();  // não faz refresh quando onSubmit é chamado
-        TaskService.save(
-            this.state.task,
-            () =>this.setState({redirect:true,saving:false,alert:null}),
-            error => {
-                if(error.response){
-                    this.setErrorState(`Erro ao carregar dados ; ${error.response}`);
-                }else{
-                    this.setErrorState(`Erro na requisição :${error.message}`);
-                }
-            }
-        )
-        
+        tasks.save(task);
     }
 
-    onInputChangeHandler(event){
+    const onInputChangeHandler = (event)=>{
         const field = event.target.name;
         const value = event.target.value;
-        this.setState(prevState => ({task :{ ...prevState.task,[field]:value}}));
-        console.log(this.state.task);
+        setTask({...task,[field]:value});
     }
 
-    render() {
-        if(!AuthService.isAuthenticated()){return <Redirect to="/login"/>}
-        if (this.state.redirect){
-           return <Redirect to="/" />
-        }
+    if(!auth.isAuthenticated()){return <Redirect to="/login"/>}
 
-        if (this.state.loading){
-            return <Spinner />
-        }
-        
-        return (
+    if (redirect  || tasks.taskUodated){
+       return <Redirect to="/" />
+    }
+
+    return (
             <div>
                 
                 <div className="container">
-                    {this.state.alert!=null? <Alert message={this.state.alert} />:""}
-                    <h2>{this.state.buttonName} Tarefa </h2>    
-                        <form onSubmit={this.onSubmitHandler}>
+                    {tasks.error && <Alert message={tasks.error} />}
+                    <h2>{task.id!==0?"Alterar ":"Nova "} Tarefa </h2>
+                        <form onSubmit={onSubmitHandler}>
                             <div className="form-group">
-                                <label description="description">Descrição</label>
+                                <label >Descrição</label>
                                 <input type="text"
                                     className="form-control"
                                     name="description"
-                                    value={this.state.task.description}
+                                    value={task.description}
                                     placeholder="Digite a descrição" 
-                                    onChange={this.onInputChangeHandler}/>
+                                    onChange={onInputChangeHandler}/>
                             </div>
 
                             <div className="form-group">
-                                <label data="whenToDo">Data</label>
+                                <label>Data</label>
                                 <input type="date"
                                     className="form-control"
                                     name="whenToDo"
-                                    value={this.state.task.whenToDo}
+                                    value={task.whenToDo}
                                     placeholder="Informe a data do evento" 
-                                    onChange={this.onInputChangeHandler}/>
+                                    onChange={onInputChangeHandler}/>
                             </div>
 
                             <div className="form-group">
                                 <button 
                                         type="submit" 
                                         className="btn btn-primary"
-                                        disable={this.state.saving}>
+                                        disabled={tasks.processing}>
                                             {
-                                                
-                                                this.state.saving?
+                                                tasks.processing?
                                                     <span className="spinner-border spinner-border-sm"
                                                         role="status" aria-hidden="true"></span>
-                                                    :this.state.buttonName
+                                                    :task.id===0 ? "Gravar" : "Alterar"
                                             }
-                                            
-
                                 </button>&nbsp;&nbsp;
                                 <button 
                                         type="button" 
                                         className="btn btn-primary"
-                                        onClick={()=>{this.setState({redirect:true})}}
+                                        disabled ={tasks.processing}
+                                        onClick={()=>setRedirect(true)}
                                         >Cancelar
                                         
                                 </button>
@@ -140,8 +81,8 @@ class TaskForm extends Component {
                     
                 </div>
             </div>
-        );
-    }
+    );
+
 }
 
 export default TaskForm;
