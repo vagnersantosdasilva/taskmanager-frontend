@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-class NavBarItem extends Component {
-    render() {
+const NavBarItem  = ({item})=> {
+
         return (
             <div>
-                <Link to={this.props.item.href}
-                className = {`nav-item nav-link  ${this.props.item.active? "active" :""}`}
-                onClick={e => this.props.onClick(this.props.item) }> 
-                {this.props.item.name} </Link>
+                <Link to={item.href}
+                className = {`nav-item nav-link  ${item.active? "active" :""}`}
+                onClick={e => item.onClick(item) }>
+                {item.name} </Link>
             </div>
         );
-    }
+
 }
 
 export default NavBarItem;
